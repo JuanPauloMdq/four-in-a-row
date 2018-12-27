@@ -1,0 +1,48 @@
+group 'jpr'
+version '1.0-SNAPSHOT'
+
+
+buildscript {
+    ext {
+        springBootVersion = '2.1.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: "org.springframework.boot"
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.4'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    baseName = 'webapp'
+    version = '0.0.1-SNAPSHOT'
+}
+
+repositories {
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url "https://plugins.gradle.org/m2/" }
+}
+
+
+
+dependencies {
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    compile("org.springframework.boot:spring-boot-starter-web:2.1.1.RELEASE")
+    compile("javax.servlet:javax.servlet-api:4.0.1")
+
+
+}

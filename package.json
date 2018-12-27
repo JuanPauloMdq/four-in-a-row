@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "maven": "^4.4.1",
+    "springboot": "^0.1.0"
+  }
+}
