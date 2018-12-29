@@ -44,5 +44,5 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:2.1.1.RELEASE")
     compile("javax.servlet:javax.servlet-api:4.0.1")
 
-
+    compile("junit:junit:4.12")
 }

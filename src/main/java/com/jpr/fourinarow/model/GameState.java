@@ -1,37 +1,37 @@
 package com.jpr.fourinarow.model;
 
 /**
- * Created by Juan on 12/27/2018.
+ * State of the 4 in a Row Game, is used to keep tracking if the game ended and which player won
  */
 
 public class GameState {
 
-    private Boolean gameEnded;
-    private Boolean playerAWin;
-    private Boolean currentPlayerA;
+    private Boolean gameEnded = false;
+    private Integer winner;
+    private Boolean currentPlayerBlue;
 
 
     public Boolean getGameEnded() {
         return gameEnded;
     }
 
-    public Boolean getPlayerAWin() {
-        return playerAWin;
-    }
-
     public void setGameEnded(Boolean gameEnded) {
         this.gameEnded = gameEnded;
     }
 
-    public void setPlayerAWin(Boolean playerAWin) {
-        this.playerAWin = playerAWin;
+    public Boolean getCurrentPlayerBlue() {
+        return currentPlayerBlue;
     }
 
-    public Boolean getCurrentPlayerA() {
-        return currentPlayerA;
+    public void setCurrentPlayerBlue(Boolean currentPlayerBlue) {
+        this.currentPlayerBlue = currentPlayerBlue;
     }
 
-    public void setCurrentPlayerA(Boolean currentPlayerA) {
-        this.currentPlayerA = currentPlayerA;
+    public void setWinner(Integer winner) {
+        this.winner = winner;
+    }
+
+    public Integer getWinner() {
+        return winner;
     }
 }

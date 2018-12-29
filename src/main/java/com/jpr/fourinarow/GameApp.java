@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Created by Juan on 12/27/2018.
+ * Starts the Sping app
  */
 
 @SpringBootApplication

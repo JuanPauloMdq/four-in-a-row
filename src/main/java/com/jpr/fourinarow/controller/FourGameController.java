@@ -10,18 +10,41 @@ import javax.websocket.server.PathParam;
  */
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/game")
 public class FourGameController {
 
     GameService gameService = new GameService();
 
-    @GetMapping("/create")
+    /**
+     * Creates a game and return the Board as a JSON
+     * @return
+     */
+    @PostMapping("/create")
     public Object createGame() {
         return gameService.createGame();
     }
 
-    @GetMapping("/addMovement/{gameId}/{position}")
-    public Object addDisc(@PathParam("gameId") Long gameId, @PathParam("position") Integer position) {
-        return gameService.addDisc(gameId, position);
+    /**
+     * Adds a coin for the game @gameId in the specified column
+     *
+     * @param gameId
+     * @param column
+     * @return
+     */
+    @GetMapping("/addCoin/{gameId}/{column}")
+    public Object addCoin(@PathVariable Long gameId, @PathVariable Integer column) {
+        return gameService.addCoin(gameId, column);
+    }
+
+    /**
+     * Returns a suggested movement, can be used to implement the 1vscomputer
+     *
+     * @param gameId
+     * @return
+     */
+    @GetMapping("/computer/{gameId}")
+    public Object computerMovement(@PathVariable Long gameId) {
+        return gameService.getComputerMovement(gameId);
     }
 }

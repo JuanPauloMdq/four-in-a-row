@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
- * Created by Juan on 12/27/2018.
+ * Services to create or progress in the 4 in a Row game
  */
 
 public class GameService {
@@ -19,26 +19,51 @@ public class GameService {
     private Random startingPlayerRandom = new Random();
 
 
-    // Creates a game and returns it
+    /**
+     * Create a game and return it
+     * @return
+     */
     public GameBoard createGame(){
         Long gameId = gameNumber;
+        // Sets an incremental Id for the games, in case we want multiple servers
+        // we would need to store the games in a database and change the way the id is generated
         gameNumber++;
 
         GameBoard board = new GameBoard(gameId, BOARD_SIZE);
         // Choose the starting player at random
-        board.getGameState().setCurrentPlayerA(startingPlayerRandom.nextBoolean());
+        board.getGameState().setCurrentPlayerBlue(startingPlayerRandom.nextBoolean());
         games.put(gameId, board);
 
         return board;
     }
 
 
-    public GameBoard addDisc(Long gameId, Integer position) {
+    /**
+     * Adds a coin to the game with the id @gameId to the specified column
+     *
+     * @param gameId
+     * @param column
+     * @return
+     */
+    public GameBoard addCoin(Long gameId, Integer column) {
         if(games.containsKey(gameId)){
             GameBoard currentGame = games.get(gameId);
-            currentGame.addDisc(position);
+            currentGame.addCoin(column);
+
+            // Removes the game from the Map once is ended
+            if(currentGame.getGameState().getGameEnded()){
+                games.remove(gameId);
+            }
             return currentGame;
 
+        } else {
+            throw new GameNotFountException();
+        }
+    }
+
+    public Object getComputerMovement(Long gameId) {
+        if(games.containsKey(gameId)){
+            return Math.floor(Math.random() * BOARD_SIZE);
         } else {
             throw new GameNotFountException();
         }
