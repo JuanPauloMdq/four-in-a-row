@@ -11,6 +11,9 @@ import java.util.Arrays;
  */
 
 public class GameBoard {
+    public static final int BOARD_SIZE = 7;
+
+    public static final int BOARD_EMPTY_COIN = 0;
     public static final int BOARD_BLUE_COIN = 1;
     public static final int BOARD_RED_COIN = 2;
 
@@ -21,17 +24,15 @@ public class GameBoard {
     private Long gameId;
     private GameState gameState = new GameState();
     private byte[][] board;
-    private int boardSize;
 
     private int amountOfCoins = 0;
 
 
-    public GameBoard(Long gameId, int boardSize) {
-        this.boardSize = boardSize;
+    public GameBoard(Long gameId) {
         this.gameId = gameId;
-        board = new byte[boardSize][boardSize];
+        board = new byte[BOARD_SIZE][BOARD_SIZE];
 
-        for(int i=0; i<boardSize; i++) {
+        for(int i=0; i<BOARD_SIZE; i++) {
             Arrays.fill(board[i], (byte) 0);
         }
 
@@ -41,16 +42,21 @@ public class GameBoard {
      *  Adds a coin to a specific @Column, the method checks for the first available row
      *
      * @param column
+     * @return determines if was able to add the coin
      */
 
-    public void addCoin(Integer column) {
+    public Boolean addCoin(Integer column) {
         if(getGameState().getGameEnded()){
             // The user tried to add a coin when the game was already ended
             throw new GameEndedException();
         }
         // Place the coin
-        Integer row = placeCoin(column);
-        amountOfCoins ++;
+        Integer row;
+        try{
+        row = placeCoin(column);
+        } catch (DiscOutofBoardException ex){
+            return false;
+        }
         // Checks if the currentPlayer won
         if(checkFourInARow(column, row)){
             getGameState().setGameEnded(true);
@@ -64,6 +70,8 @@ public class GameBoard {
             // Change user
             getGameState().setCurrentPlayerBlue(!getGameState().getCurrentPlayerBlue());
         }
+
+        return true;
     }
 
     /**
@@ -82,7 +90,7 @@ public class GameBoard {
         // Checks in 4 * 7 cells (directions multiplied the cells around each direction)
 
         // Horizontal check
-        for(int i=0; i<boardSize; i++){
+        for(int i=0; i<BOARD_SIZE; i++){
             if(isColor(row, column-3+i , colorForCurrentUser)){
                 consecutiveOcurrences++;
 
@@ -96,7 +104,7 @@ public class GameBoard {
 
         consecutiveOcurrences = 0;
         // Vertical check
-        for(int i=0; i<boardSize; i++){
+        for(int i=0; i<BOARD_SIZE; i++){
             if(isColor(row-3+i, column, colorForCurrentUser)){
                 consecutiveOcurrences++;
 
@@ -110,7 +118,7 @@ public class GameBoard {
 
         consecutiveOcurrences = 0;
         // Diagonal check
-        for(int i=0; i<boardSize; i++){
+        for(int i=0; i<BOARD_SIZE; i++){
             if(isColor(row-i+3, column-i+3,colorForCurrentUser)){
                 consecutiveOcurrences++;
 
@@ -124,7 +132,7 @@ public class GameBoard {
 
         consecutiveOcurrences = 0;
         // The Other Diagonal check
-        for(int i=0; i<boardSize; i++){
+        for(int i=0; i<BOARD_SIZE; i++){
             if(isColor(row+i-3, column-i+3,colorForCurrentUser)){
                 consecutiveOcurrences++;
 
@@ -149,7 +157,7 @@ public class GameBoard {
      */
     private boolean isColor(int row, int column, byte color) {
         // Checks if the position is out of bounds
-        if(row<0 || row>=boardSize || column<0 || column>=boardSize){
+        if(row<0 || row>=BOARD_SIZE || column<0 || column>=BOARD_SIZE){
             return false;
         }
         return board[column][row] == color;
@@ -162,9 +170,10 @@ public class GameBoard {
      * @return
      */
     private Integer placeCoin(Integer column) {
-        for(int i=0; i<boardSize; i++){
-            if(board[column][i] == 0){
+        for(int i=0; i<BOARD_SIZE; i++){
+            if(board[column][i] == BOARD_EMPTY_COIN){
                 board[column][i] = getColorForCurrentUser();
+                amountOfCoins ++;
 
                 return i;
             }
@@ -183,6 +192,18 @@ public class GameBoard {
             return BOARD_BLUE_COIN;
         }
         return BOARD_RED_COIN;
+    }
+
+    public void removeCoin(Integer column){
+        getGameState().setGameEnded(false);
+        amountOfCoins--;
+
+        for(int i=0; i<BOARD_SIZE; i++){
+            if(board[column][i] != BOARD_EMPTY_COIN){
+                board[column][i] = BOARD_EMPTY_COIN;
+                return;
+            }
+        }
     }
 
 

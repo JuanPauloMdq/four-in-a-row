@@ -2,6 +2,7 @@ package com.jpr.fourinarow.services;
 
 import com.jpr.fourinarow.model.GameBoard;
 import com.jpr.fourinarow.model.exceptions.GameNotFountException;
+import com.jpr.fourinarow.services.ia.EasyComputerIa;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -12,12 +13,11 @@ import java.util.Random;
 
 public class GameService {
 
-    public static final int BOARD_SIZE = 7;
-
     private Long gameNumber = 0l;
     private HashMap<Long, GameBoard> games = new HashMap<Long, GameBoard>();
     private Random startingPlayerRandom = new Random();
 
+    private EasyComputerIa easyComputerIa = new EasyComputerIa();
 
     /**
      * Create a game and return it
@@ -29,7 +29,7 @@ public class GameService {
         // we would need to store the games in a database and change the way the id is generated
         gameNumber++;
 
-        GameBoard board = new GameBoard(gameId, BOARD_SIZE);
+        GameBoard board = new GameBoard(gameId);
         // Choose the starting player at random
         board.getGameState().setCurrentPlayerBlue(startingPlayerRandom.nextBoolean());
         games.put(gameId, board);
@@ -71,11 +71,11 @@ public class GameService {
         if(games.containsKey(gameId)){
             GameBoard currentGame = games.get(gameId);
 
-            // First movement at random
+            // First movements at random
             if(currentGame.getAmountOfCoins() <=4){
-                return Math.floor(Math.random() * BOARD_SIZE);
+                return (int) Math.floor(Math.random() * GameBoard.BOARD_SIZE);
             } else {
-                return Math.floor(Math.random() * BOARD_SIZE);
+                return easyComputerIa.getComputerMovement(currentGame);
             }
 
         } else {
