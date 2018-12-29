@@ -7,8 +7,10 @@
    
 	<link rel="stylesheet" type="text/css" href="style.css"/>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-	<script src="./js/views.js"></script>
 	<script src="./js/game.js"></script>
+	<script src="./js/services.js"></script>
+	<script src="./js/views.js"></script>
+	
 
 </head>
 
@@ -18,18 +20,27 @@
 		<div id="homeLogo"></div>
 	
 		<div id="buttonContainer">
-			<button id="newGameButton" class="blueButton" onclick="showGameScreen()">New Game</button>
+			<button id="oneVsOneButton" class="blueButton" onclick="startGame()">One vs One</button>
+			<button id="oneVsComputerButton" class="blueButton" onclick="startGameVsComputer()">One vs Computer</button>
 		</div>
 	</div>
 	
 	<div id="gameScreen">
+		<div id="homeLogoSmall"></div>
 		<div id="boardContainer">		
 			<div id="blueHand"></div>
 			<div id="redHand"></div>
+			<div id="computerHand"></div>
 			
 			<div id="board"></div>
 		</div>
+		<div id="playerBlueIndicator"></div>
+		<div id="playerRedIndicator"></div>
 	<div>
 
+	<div id="playerWonPopup">
+		<div id="playerWonMessage"></div>
+		<button id="backButton" class="blueButton" onclick="showHomeScreen()">Back to Menu</button>
+	</div>
 </body>
 </html>
