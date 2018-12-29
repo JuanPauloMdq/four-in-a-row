@@ -61,9 +61,23 @@ public class GameService {
         }
     }
 
+    /**
+     * Returns the computer movement for the specified game
+     *
+     * @param gameId
+     * @return
+     */
     public Object getComputerMovement(Long gameId) {
         if(games.containsKey(gameId)){
-            return Math.floor(Math.random() * BOARD_SIZE);
+            GameBoard currentGame = games.get(gameId);
+
+            // First movement at random
+            if(currentGame.getAmountOfCoins() <=4){
+                return Math.floor(Math.random() * BOARD_SIZE);
+            } else {
+                return Math.floor(Math.random() * BOARD_SIZE);
+            }
+
         } else {
             throw new GameNotFountException();
         }

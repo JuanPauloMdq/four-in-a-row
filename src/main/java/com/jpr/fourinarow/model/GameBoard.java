@@ -23,6 +23,8 @@ public class GameBoard {
     private byte[][] board;
     private int boardSize;
 
+    private int amountOfCoins = 0;
+
 
     public GameBoard(Long gameId, int boardSize) {
         this.boardSize = boardSize;
@@ -48,6 +50,7 @@ public class GameBoard {
         }
         // Place the coin
         Integer row = placeCoin(column);
+        amountOfCoins ++;
         // Checks if the currentPlayer won
         if(checkFourInARow(column, row)){
             getGameState().setGameEnded(true);
@@ -197,5 +200,9 @@ public class GameBoard {
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public int getAmountOfCoins() {
+        return amountOfCoins;
     }
 }

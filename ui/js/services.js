@@ -46,5 +46,28 @@ var apiServices = {
       response.data = status;
       callback(response);
   	});
+  },
+  
+  computerMovement: function(gameId, callback){
+    var response = {};
+    
+    $.ajax({
+  	  type: "GET",
+  	  url: API_URL + "computer/" + gameId,
+  	  cache: false,
+  	  headers: {
+  		'Content-Type': 'application/json'
+  	  }
+  	})
+  	.done(function(result) {
+      response.success = true;
+      response.data = result;
+      callback(response);
+  	})
+  	.fail(function(status) {
+      response.success = false;
+      response.data = status;
+      callback(response);
+  	});
   }
 }
