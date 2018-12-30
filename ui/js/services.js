@@ -1,4 +1,6 @@
-var API_URL = "http://localhost:8090/game/";
+var API_URL = "http://" + window.location.hostname +":8090/game/";
+
+
 var apiServices = {
   createGame: function(callback){
     var response = {};
