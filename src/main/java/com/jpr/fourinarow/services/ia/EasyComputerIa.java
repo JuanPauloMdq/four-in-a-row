@@ -31,10 +31,8 @@ public class EasyComputerIa {
 
         Integer bestScore = -2;
         Integer bestScorePosition = 0;
-        System.out.println("------------------------------");
         for(int i=0; i<GameBoard.BOARD_SIZE; i++){
             Integer score = getScore(currentGame, i);
-            System.out.println("Score: " + score);
             if(score > bestScore || (score == bestScore && flipACoin())){
                 bestScore = score;
                 bestScorePosition = i;

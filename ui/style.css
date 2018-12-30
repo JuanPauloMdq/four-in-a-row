@@ -164,6 +164,16 @@
   right: 10px;
 }
 
+#playerComputerIndicator{
+	background-size: 500px;
+	height: 110px;
+	width: 315px;
+	background-image: url(./images/computer-won.png);  
+	margin-top: 610px;
+	position: fixed;
+	right: 10px;
+}
+
 #playerRedIndicator{
   width: 325px;
   background-size: 500px;

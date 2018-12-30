@@ -6,7 +6,6 @@ var BOARD_RED_COIN = 2;
 
 var PLAYER_BLUE = 0;
 var PLAYER_RED = 1;
-var PLAYER_COMPUTER = 2;
 
 var currentPlayerBlue = true;
 var updatingBoard = false;
@@ -53,8 +52,7 @@ function newGame(vsComputer){
        computerTurn();
      }
    } else {
-     // TODO: error
-     updatingBackend = false;
+     alert("The server was unable to complete your request!");
    }
  });
  board = new Array(BOARD_SIZE);
@@ -101,8 +99,7 @@ function addCoinInternal(position){
         updatingBackend = false;
         computerTurn();
       } else {
-        // TODO: error
-        updatingBackend = false;
+        alert("The server was unable to complete your request!");
       }
     });
      
@@ -123,8 +120,8 @@ function addCoinInternal(position){
     if(isComputerTurn()){
       $("#computerHand")[0].style.marginLeft = (585) + "px";
       $("#computerHand").show();
-      var computerHandPosition = (position+1) * 80;
-      $("#computerHand").animate({left: (computerHandPosition+25) + "px"}, 700, 'swing', function(){
+      var computerHandPosition = (position) * 80;
+      $("#computerHand").animate({marginLeft: (computerHandPosition+25) + "px"}, 700, 'swing', function(){
         $('#boardContainer').prepend(newCoin);
         playCoinSound();
         newCoin.animate({top: verticalPositionPx + "px"}, fallingTime, 'swing', function(){
@@ -162,7 +159,7 @@ function computerTurn(){
       if(response.success){
         addCoinInternal(response.data);
       } else {
-        //TODO: error
+        alert("The server was unable to complete your request!");
       }
     });
   }
