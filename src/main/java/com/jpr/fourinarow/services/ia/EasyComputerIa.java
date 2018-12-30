@@ -61,32 +61,36 @@ public class EasyComputerIa {
      * @return
      */
     private Integer getScore(GameBoard currentGame, int column) {
-        currentGame.addCoin(column);
-
-        Integer badMovements = 0;
-        // Red Player movements
-        // Detects if the opponent can win after this movement
-        for(int i=0; i<GameBoard.BOARD_SIZE; i++){
-            currentGame.addCoin(i);
-            if(currentGame.getGameState().getGameEnded()){
-                badMovements++;
+        if(currentGame.addCoin(column)){
+            Integer badMovements = 0;
+            // Red Player movements
+            // Detects if the opponent can win after this movement
+            for(int i=0; i<GameBoard.BOARD_SIZE; i++){
+                if(currentGame.addCoin(i)){
+                    if(currentGame.getGameState().getGameEnded()){
+                        badMovements++;
+                    }
+                    currentGame.removeCoin(i);
+                }
             }
-            currentGame.removeCoin(i);
-        }
-        if(badMovements >0){
+            if(badMovements >0){
+                currentGame.removeCoin(column);
+                return -1 * badMovements;
+            }
+
+            // Blue player movements
+            // Detects if how many winning situation will generate this movement
+            Integer winningMovements = 0;
+            for(int i=0; i<GameBoard.BOARD_SIZE; i++){
+                winningMovements += countWinningMovements(currentGame, i);
+            }
+
             currentGame.removeCoin(column);
-            return -1 * badMovements;
+            return winningMovements;
+        } else {
+            // The column is full
+            return -10;
         }
-
-        // Blue player movements
-        // Detects if how many winning situation will generate this movement
-        Integer winningMovements = 0;
-        for(int i=0; i<GameBoard.BOARD_SIZE; i++){
-            winningMovements += countWinningMovements(currentGame, i);
-        }
-
-        currentGame.removeCoin(column);
-        return winningMovements;
     }
 
     /**
@@ -97,17 +101,21 @@ public class EasyComputerIa {
      * @return
      */
     private Integer countWinningMovements(GameBoard currentGame, Integer column){
-        currentGame.addCoin(column);
-        Integer winningMovements = 0;
-        for(int i=0; i<GameBoard.BOARD_SIZE; i++){
-            currentGame.addCoin(i);
-            if(currentGame.getGameState().getGameEnded()){
-                winningMovements++;
+        if(currentGame.addCoin(column)){
+            Integer winningMovements = 0;
+            for(int i=0; i<GameBoard.BOARD_SIZE; i++){
+                if(currentGame.addCoin(i)){
+                    if(currentGame.getGameState().getGameEnded()){
+                        winningMovements++;
+                    }
+                    currentGame.removeCoin(i);
+                }
             }
-            currentGame.removeCoin(i);
+            currentGame.removeCoin(column);
+            return winningMovements;
         }
-        currentGame.removeCoin(column);
-        return winningMovements;
+
+        return 0;
     }
 
 }
