@@ -15,6 +15,11 @@ public class EasyComputerIa {
      * @return
      */
     public Integer getComputerMovement(GameBoard currentGame) {
+        // First movements at random
+        if(currentGame.getAmountOfCoins() <=4){
+            return (int) Math.floor(Math.random() * GameBoard.BOARD_SIZE);
+        }
+
         // Blue player movements
         for(int i=0; i<GameBoard.BOARD_SIZE; i++){
             if(currentGame.addCoin(i)){
@@ -48,7 +53,7 @@ public class EasyComputerIa {
 
     /**
      * Returns a score for each posible movement. If the next moment would produce a losing situation
-     * the method returns -1 score. Otherwise returns the movement that may produce the max amount of winning
+     * the method returns a negative score. Otherwise returns the movement that may produce the max amount of winning
      * scenarios in the next movement
      *
      * @param currentGame
@@ -60,9 +65,9 @@ public class EasyComputerIa {
 
         Integer badMovements = 0;
         // Red Player movements
+        // Detects if the opponent can win after this movement
         for(int i=0; i<GameBoard.BOARD_SIZE; i++){
             currentGame.addCoin(i);
-            // The opponnet will win after this moment
             if(currentGame.getGameState().getGameEnded()){
                 badMovements++;
             }
@@ -74,6 +79,7 @@ public class EasyComputerIa {
         }
 
         // Blue player movements
+        // Detects if how many winning situation will generate this movement
         Integer winningMovements = 0;
         for(int i=0; i<GameBoard.BOARD_SIZE; i++){
             winningMovements += countWinningMovements(currentGame, i);
@@ -83,6 +89,13 @@ public class EasyComputerIa {
         return winningMovements;
     }
 
+    /**
+     * Count the amount of winning chaces two steps ahead
+     *
+     * @param currentGame
+     * @param column
+     * @return
+     */
     private Integer countWinningMovements(GameBoard currentGame, Integer column){
         currentGame.addCoin(column);
         Integer winningMovements = 0;

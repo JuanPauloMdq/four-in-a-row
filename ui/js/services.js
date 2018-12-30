@@ -25,14 +25,14 @@ var apiServices = {
   	});
   },
   
-  addCoin: function(gameId, position, callback){
+  addCoin: function(boardId, position, callback){
     var response = {};
     //Can be used to generate the code for the tests
     //console.log('board.addCoin(' + position + ');');
     
     $.ajax({
   	  type: "GET",
-  	  url: API_URL + "addCoin/" + gameId + "/" + position,
+  	  url: API_URL + "addCoin/" + boardId + "/" + position,
   	  cache: false,
   	  headers: {
   		'Content-Type': 'application/json'
@@ -50,12 +50,12 @@ var apiServices = {
   	});
   },
   
-  computerMovement: function(gameId, callback){
+  computerMovement: function(boardId, callback){
     var response = {};
     
     $.ajax({
   	  type: "GET",
-  	  url: API_URL + "computer/" + gameId,
+  	  url: API_URL + "computer/" + boardId,
   	  cache: false,
   	  headers: {
   		'Content-Type': 'application/json'

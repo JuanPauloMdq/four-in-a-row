@@ -30,27 +30,27 @@ public class FourGameController {
     }
 
     /**
-     * Adds a coin for the game @gameId in the specified column
+     * Adds a coin for the game @boardId in the specified column
      *
-     * @param gameId
+     * @param boardId
      * @param column
      * @return
      */
-    @GetMapping("/addCoin/{gameId}/{column}")
-    public Object addCoin(@PathVariable Long gameId, @PathVariable Integer column) {
+    @GetMapping("/addCoin/{boardId}/{column}")
+    public Object addCoin(@PathVariable Long boardId, @PathVariable Integer column) {
         logger.debug("Adding coin to column: " + column);
-        return gameService.addCoin(gameId, column);
+        return gameService.addCoin(boardId, column);
     }
 
     /**
-     * Returns a suggested movement, can be used to implement the 1vscomputer
+     * Returns a suggested movement, used to implement the 1 vs Computer
      *
-     * @param gameId
+     * @param boardId
      * @return
      */
-    @GetMapping("/computer/{gameId}")
-    public Object computerMovement(@PathVariable Long gameId) {
+    @GetMapping("/computer/{boardId}")
+    public Object computerMovement(@PathVariable Long boardId) {
         logger.debug("Getting computer movement");
-        return gameService.getComputerMovement(gameId);
+        return gameService.getComputerMovement(boardId);
     }
 }

@@ -20,15 +20,20 @@ public class GameBoard {
     public static final int PLAYER_BLUE = 0;
     public static final int PLAYER_RED = 1;
 
-    private Long gameId;
+    private Long boardId;
     private GameState gameState = new GameState();
     private byte[][] board;
 
     private int amountOfCoins = 0;
 
 
-    public GameBoard(Long gameId) {
-        this.gameId = gameId;
+    /**
+     * Returns the Board corresponding to the @boardId
+     *
+     * @param boardId
+     */
+    public GameBoard(Long boardId) {
+        this.boardId = boardId;
         board = new byte[BOARD_SIZE][BOARD_SIZE];
 
         for(int i=0; i<BOARD_SIZE; i++) {
@@ -216,16 +221,16 @@ public class GameBoard {
     }
 
 
-    public Long getGameId() {
-        return gameId;
+    public Long getBoardId() {
+        return boardId;
     }
 
     public GameState getGameState() {
         return gameState;
     }
 
-    public void setGameId(Long gameId) {
-        this.gameId = gameId;
+    public void setBoardId(Long boardId) {
+        this.boardId = boardId;
     }
 
     public void setGameState(GameState gameState) {

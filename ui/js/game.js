@@ -88,7 +88,7 @@ function addCoinInternal(position){
   if(coinCanBePlaced(position)){
     updatingBoard = true;
     updatingBackend = true;
-    apiServices.addCoin(currentGame.gameId, position, function(response){
+    apiServices.addCoin(currentGame.boardId, position, function(response){
       if(response.success){
         // Check win
         if(response.data.gameState.gameEnded){
@@ -155,7 +155,7 @@ function getCurrentPosition(container, event){
 
 function computerTurn(){
   if(!updatingBoard && !updatingBackend && isComputerTurn()){
-    apiServices.computerMovement(currentGame.gameId, function(response){
+    apiServices.computerMovement(currentGame.boardId, function(response){
       if(response.success){
         addCoinInternal(response.data);
       } else {
