@@ -2,6 +2,7 @@ package com.jpr.fourinarow.services;
 
 import com.jpr.fourinarow.model.GameBoard;
 import com.jpr.fourinarow.model.exceptions.GameNotFountException;
+import com.jpr.fourinarow.services.ia.EasyComputerIa;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -12,47 +13,46 @@ import java.util.Random;
 
 public class GameService {
 
-    public static final int BOARD_SIZE = 7;
-
     private Long gameNumber = 0l;
     private HashMap<Long, GameBoard> games = new HashMap<Long, GameBoard>();
     private Random startingPlayerRandom = new Random();
 
+    private EasyComputerIa easyComputerIa = new EasyComputerIa();
 
     /**
      * Create a game and return it
      * @return
      */
     public GameBoard createGame(){
-        Long gameId = gameNumber;
+        Long boardId = gameNumber;
         // Sets an incremental Id for the games, in case we want multiple servers
         // we would need to store the games in a database and change the way the id is generated
         gameNumber++;
 
-        GameBoard board = new GameBoard(gameId, BOARD_SIZE);
+        GameBoard board = new GameBoard(boardId);
         // Choose the starting player at random
         board.getGameState().setCurrentPlayerBlue(startingPlayerRandom.nextBoolean());
-        games.put(gameId, board);
+        games.put(boardId, board);
 
         return board;
     }
 
 
     /**
-     * Adds a coin to the game with the id @gameId to the specified column
+     * Adds a coin to the game with the id @boardId to the specified column
      *
-     * @param gameId
+     * @param boardId
      * @param column
      * @return
      */
-    public GameBoard addCoin(Long gameId, Integer column) {
-        if(games.containsKey(gameId)){
-            GameBoard currentGame = games.get(gameId);
+    public GameBoard addCoin(Long boardId, Integer column) {
+        if(games.containsKey(boardId)){
+            GameBoard currentGame = games.get(boardId);
             currentGame.addCoin(column);
 
             // Removes the game from the Map once is ended
             if(currentGame.getGameState().getGameEnded()){
-                games.remove(gameId);
+                games.remove(boardId);
             }
             return currentGame;
 
@@ -61,9 +61,18 @@ public class GameService {
         }
     }
 
-    public Object getComputerMovement(Long gameId) {
-        if(games.containsKey(gameId)){
-            return Math.floor(Math.random() * BOARD_SIZE);
+    /**
+     * Returns the computer movement for the specified game
+     *
+     * @param boardId
+     * @return
+     */
+    public Object getComputerMovement(Long boardId) {
+        if(games.containsKey(boardId)){
+            GameBoard currentGame = games.get(boardId);
+
+            return easyComputerIa.getComputerMovement(currentGame);
+
         } else {
             throw new GameNotFountException();
         }

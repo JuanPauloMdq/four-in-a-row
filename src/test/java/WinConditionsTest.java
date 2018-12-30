@@ -14,7 +14,7 @@ public class WinConditionsTest {
      */
     @Test
     public void testHorizontallRed(){
-        GameBoard board = new GameBoard(1l, GameService.BOARD_SIZE);
+        GameBoard board = new GameBoard(1l);
         board.getGameState().setCurrentPlayerBlue(false);
 
         testHorizontall(board);
@@ -24,7 +24,7 @@ public class WinConditionsTest {
 
     @Test
     public void testHorizontallBlue(){
-        GameBoard board = new GameBoard(1l, GameService.BOARD_SIZE);
+        GameBoard board = new GameBoard(1l);
         board.getGameState().setCurrentPlayerBlue(true);
 
         testHorizontall(board);
@@ -34,7 +34,7 @@ public class WinConditionsTest {
 
     @Test
     public void testHorizontallRed2(){
-        GameBoard board = new GameBoard(1l, GameService.BOARD_SIZE);
+        GameBoard board = new GameBoard(1l);
         board.getGameState().setCurrentPlayerBlue(false);
 
         testHorizontall2(board);
@@ -44,7 +44,7 @@ public class WinConditionsTest {
 
     @Test
     public void testHorizontallBlue2(){
-        GameBoard board = new GameBoard(1l, GameService.BOARD_SIZE);
+        GameBoard board = new GameBoard(1l);
         board.getGameState().setCurrentPlayerBlue(true);
 
         testHorizontall2(board);
@@ -54,7 +54,7 @@ public class WinConditionsTest {
 
     @Test
     public void testHorizontallRed3(){
-        GameBoard board = new GameBoard(1l, GameService.BOARD_SIZE);
+        GameBoard board = new GameBoard(1l);
         board.getGameState().setCurrentPlayerBlue(true);
 
         testHorizontall3(board);
@@ -64,7 +64,7 @@ public class WinConditionsTest {
 
     @Test
     public void testHorizontallBlue3(){
-        GameBoard board = new GameBoard(1l, GameService.BOARD_SIZE);
+        GameBoard board = new GameBoard(1l);
         board.getGameState().setCurrentPlayerBlue(false);
 
         testHorizontall3(board);
@@ -118,7 +118,7 @@ public class WinConditionsTest {
      */
     @Test
     public void testVerticalRed(){
-        GameBoard board = new GameBoard(1l, GameService.BOARD_SIZE);
+        GameBoard board = new GameBoard(1l);
         board.getGameState().setCurrentPlayerBlue(false);
 
         testVerticall(board);
@@ -128,7 +128,7 @@ public class WinConditionsTest {
 
     @Test
     public void testVerticalBlue(){
-        GameBoard board = new GameBoard(1l, GameService.BOARD_SIZE);
+        GameBoard board = new GameBoard(1l);
         board.getGameState().setCurrentPlayerBlue(true);
 
         testVerticall(board);
@@ -156,7 +156,7 @@ public class WinConditionsTest {
      */
     @Test
     public void testDiagonalRed(){
-        GameBoard board = new GameBoard(1l, GameService.BOARD_SIZE);
+        GameBoard board = new GameBoard(1l);
         board.getGameState().setCurrentPlayerBlue(false);
 
         testVerticall(board);
@@ -166,7 +166,7 @@ public class WinConditionsTest {
 
     @Test
     public void testDiagonalBlue(){
-        GameBoard board = new GameBoard(1l, GameService.BOARD_SIZE);
+        GameBoard board = new GameBoard(1l);
         board.getGameState().setCurrentPlayerBlue(true);
 
         testDiagonal(board);
@@ -176,7 +176,7 @@ public class WinConditionsTest {
 
     @Test
     public void testDiagonal2Red(){
-        GameBoard board = new GameBoard(1l, GameService.BOARD_SIZE);
+        GameBoard board = new GameBoard(1l);
         board.getGameState().setCurrentPlayerBlue(false);
 
         testDiagonal2(board);
@@ -186,7 +186,7 @@ public class WinConditionsTest {
 
     @Test
     public void testDiagonal2Blue(){
-        GameBoard board = new GameBoard(1l, GameService.BOARD_SIZE);
+        GameBoard board = new GameBoard(1l);
         board.getGameState().setCurrentPlayerBlue(true);
 
         testDiagonal2(board);
@@ -239,22 +239,17 @@ public class WinConditionsTest {
      */
     @Test
     public void testColumnFull(){
-        GameBoard board = new GameBoard(1l, GameService.BOARD_SIZE);
+        GameBoard board = new GameBoard(1l);
         board.getGameState().setCurrentPlayerBlue(true);
 
-        try{
-            board.addCoin(0);
-            board.addCoin(0);
-            board.addCoin(0);
-            board.addCoin(0);
-            board.addCoin(0);
-            board.addCoin(0);
-            board.addCoin(0);
-            board.addCoin(0);
-            assert false;
-        } catch(DiscOutofBoardException ex){
-            assert true;
-        }
+        board.addCoin(0);
+        board.addCoin(0);
+        board.addCoin(0);
+        board.addCoin(0);
+        board.addCoin(0);
+        board.addCoin(0);
+        board.addCoin(0);
+        assert !board.addCoin(0);
 
     }
 }

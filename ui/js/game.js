@@ -6,7 +6,6 @@ var BOARD_RED_COIN = 2;
 
 var PLAYER_BLUE = 0;
 var PLAYER_RED = 1;
-var PLAYER_COMPUTER = 2;
 
 var currentPlayerBlue = true;
 var updatingBoard = false;
@@ -27,15 +26,18 @@ $(document).ready(function(){
      $('#boardContainer').mouseleave(function() {
        $("#blueHand").hide();
        $("#redHand").hide();
-       $("#computerHand").hide();
      });
      
      $('#boardContainer').click(function() {
-       if(!updatingBoard && !updatingBackend){
+       if(!updatingBoard && !updatingBackend && !isComputerTurn()){
          addCoin(this, event);
        }
      });     
 });
+
+function isComputerTurn(){
+  return isGameVsComputer && currentPlayerBlue;
+}
  
 function newGame(vsComputer){
   isGameVsComputer = vsComputer;
@@ -46,9 +48,11 @@ function newGame(vsComputer){
      currentGame = response.data;
      currentPlayerBlue = response.data.gameState.currentPlayerBlue;
      updatingBackend = false;
+     if(vsComputer && currentPlayerBlue){
+       computerTurn();
+     }
    } else {
-     // TODO: error
-     updatingBackend = false;
+     alert("The server was unable to complete your request!");
    }
  });
  board = new Array(BOARD_SIZE);
@@ -77,11 +81,14 @@ function placeCoin(position){
 
 function addCoin(container, event){
   var position = getCurrentPosition(container, event);
+  addCoinInternal(position);
+}
+
+function addCoinInternal(position){
   if(coinCanBePlaced(position)){
-    playCoinSound();
     updatingBoard = true;
     updatingBackend = true;
-    apiServices.addCoin(currentGame.gameId, position, function(response){
+    apiServices.addCoin(currentGame.boardId, position, function(response){
       if(response.success){
         // Check win
         if(response.data.gameState.gameEnded){
@@ -90,9 +97,9 @@ function addCoin(container, event){
         }
         
         updatingBackend = false;
+        computerTurn();
       } else {
-        // TODO: error
-        updatingBackend = false;
+        alert("The server was unable to complete your request!");
       }
     });
      
@@ -105,18 +112,35 @@ function addCoin(container, event){
     var verticalPosition = placeCoin(position);
     var verticalPositionPx = 507 - verticalPosition * 80 ;
     var fallingTime = 80 * (BOARD_SIZE - verticalPosition);
-    $('#boardContainer').prepend(newCoin);
     newCoin[0].style.left = ((position * 80) + 27) + "px"
     newCoin[0].style.top = "0px"
     newCoin[0].style.position = "absolute";
    
-    
-    newCoin.animate({top: verticalPositionPx + "px"}, fallingTime, 'swing', function(){
-      updatingBoard = false;
-    });
+    // Animate hand
+    if(isComputerTurn()){
+      $("#computerHand")[0].style.marginLeft = (585) + "px";
+      $("#computerHand").show();
+      var computerHandPosition = (position) * 80;
+      $("#computerHand").animate({marginLeft: (computerHandPosition+25) + "px"}, 700, 'swing', function(){
+        $('#boardContainer').prepend(newCoin);
+        playCoinSound();
+        newCoin.animate({top: verticalPositionPx + "px"}, fallingTime, 'swing', function(){
+          updatingBoard = false;
+          $("#computerHand").hide();
+        });
+      }); 
+          
+    } else {
+      $('#boardContainer').prepend(newCoin);
+      playCoinSound();
+      newCoin.animate({top: verticalPositionPx + "px"}, fallingTime, 'swing', function(){
+        updatingBoard = false;
+        computerTurn();
+      });
+    }
+
     $("#blueHand").hide();
     $("#redHand").hide();
-    $("#computerHand").hide();
     
     currentPlayerBlue = !currentPlayerBlue;
   }
@@ -128,16 +152,25 @@ function getCurrentPosition(container, event){
  
  return Math.max(Math.min(position, BOARD_SIZE-1), 0);
 }
+
+function computerTurn(){
+  if(!updatingBoard && !updatingBackend && isComputerTurn()){
+    apiServices.computerMovement(currentGame.boardId, function(response){
+      if(response.success){
+        addCoinInternal(response.data);
+      } else {
+        alert("The server was unable to complete your request!");
+      }
+    });
+  }
+}
  
 function updateHand(container, event){
  if(!updatingBoard){
    var left = getCurrentPosition(container, event) * 80;
 
    if(currentPlayerBlue){
-     if(isGameVsComputer){
-       $("#computerHand").show();
-       $("#computerHand")[0].style.marginLeft = (left+25) + "px";       
-     } else {
+     if(!isGameVsComputer){
        $("#blueHand").show();
        $("#blueHand")[0].style.marginLeft = (left+31) + "px";
      }

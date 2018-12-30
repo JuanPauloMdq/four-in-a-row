@@ -1,4 +1,4 @@
-var isVsConmputer = false;
+var isVsComputer = false;
 function hideAll(){
     $("#homeScreen").hide();
     $("#gameScreen").hide();
@@ -10,7 +10,7 @@ function showHomeScreen(){
 }
 
 function startGame(){
-  isVsConmputer = false;
+  isVsComputer = false;
   if(window.location.hash == '#game'){
     displayGameScreen();
   } else {
@@ -19,8 +19,12 @@ function startGame(){
 }
 
 function startGameVsComputer(){
-  isVsConmputer = true;
-  window.location.hash = 'game';
+  isVsComputer = true;
+  if(window.location.hash == '#game'){
+    displayGameScreen();
+  } else {
+    window.location.hash = 'game';  
+  }
 }
 
 
@@ -33,20 +37,31 @@ function displayHomeScreen(){
 function displayGameScreen(){
   console.log("Starting game");
   hideAll();
-  newGame(isVsConmputer);
+  newGame(isVsComputer);
+  if(isVsComputer){
+    $("#playerComputerIndicator").show();
+    $("#playerBlueIndicator").hide();
+  } else {
+    $("#playerComputerIndicator").hide();
+    $("#playerBlueIndicator").show();
+  }
   $("#gameScreen").show();
 }
 
 function showPlayerWon(player){
   if(player == PLAYER_BLUE){
-    $("#playerWonMessage")[0].style.backgroundImage = 'url("./images/blue-won.png")';
+    if(isVsComputer){
+      $("#playerWonMessage")[0].style.backgroundImage = 'url("./images/computer-won.png")';  
+    }
+    else {
+      $("#playerWonMessage")[0].style.backgroundImage = 'url("./images/blue-won.png")';  
+    }
+
   }
   if(player == PLAYER_RED){
     $("#playerWonMessage")[0].style.backgroundImage = 'url("./images/red-won.png")';
   }
-  if(player == PLAYER_COMPUTER){
-    $("#playerWonMessage")[0].style.backgroundImage = 'url("./images/computer-won.png")';
-  }
+
   $("#playerWonPopup").fadeIn();
 }
 
