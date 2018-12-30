@@ -13,13 +13,12 @@ import java.util.Arrays;
 public class GameBoard {
     public static final int BOARD_SIZE = 7;
 
-    public static final int BOARD_EMPTY_COIN = 0;
-    public static final int BOARD_BLUE_COIN = 1;
-    public static final int BOARD_RED_COIN = 2;
+    public static final byte BOARD_EMPTY_COIN = 0;
+    public static final byte BOARD_BLUE_COIN = 1;
+    public static final byte BOARD_RED_COIN = 2;
 
     public static final int PLAYER_BLUE = 0;
     public static final int PLAYER_RED = 1;
-    public static final int PLAYER_COMPUTER = 2;
 
     private Long gameId;
     private GameState gameState = new GameState();
@@ -57,6 +56,7 @@ public class GameBoard {
         } catch (DiscOutofBoardException ex){
             return false;
         }
+
         // Checks if the currentPlayer won
         if(checkFourInARow(column, row)){
             getGameState().setGameEnded(true);
@@ -66,10 +66,10 @@ public class GameBoard {
                 getGameState().setWinner(PLAYER_RED);
             }
 
-        } else {
-            // Change user
-            getGameState().setCurrentPlayerBlue(!getGameState().getCurrentPlayerBlue());
         }
+
+        // Switch user
+        getGameState().setCurrentPlayerBlue(!getGameState().getCurrentPlayerBlue());
 
         return true;
     }
@@ -173,6 +173,7 @@ public class GameBoard {
         for(int i=0; i<BOARD_SIZE; i++){
             if(board[column][i] == BOARD_EMPTY_COIN){
                 board[column][i] = getColorForCurrentUser();
+
                 amountOfCoins ++;
 
                 return i;
@@ -194,11 +195,19 @@ public class GameBoard {
         return BOARD_RED_COIN;
     }
 
+    /**
+     * Removes a coin from the board
+     *
+     * @param column
+     */
     public void removeCoin(Integer column){
         getGameState().setGameEnded(false);
         amountOfCoins--;
 
-        for(int i=0; i<BOARD_SIZE; i++){
+        // Switch the user back
+        getGameState().setCurrentPlayerBlue(!getGameState().getCurrentPlayerBlue());
+
+        for(int i=BOARD_SIZE-1; i>=0; i--){
             if(board[column][i] != BOARD_EMPTY_COIN){
                 board[column][i] = BOARD_EMPTY_COIN;
                 return;

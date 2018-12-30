@@ -1,9 +1,10 @@
 package com.jpr.fourinarow.controller;
 
 import com.jpr.fourinarow.services.GameService;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Created by Juan on 12/27/2018.
@@ -14,6 +15,8 @@ import javax.websocket.server.PathParam;
 @RequestMapping("/game")
 public class FourGameController {
 
+    final static Logger logger = LogManager.getLogger(FourGameController.class);
+
     GameService gameService = new GameService();
 
     /**
@@ -22,6 +25,7 @@ public class FourGameController {
      */
     @PostMapping("/create")
     public Object createGame() {
+        logger.debug("Creating game");
         return gameService.createGame();
     }
 
@@ -34,6 +38,7 @@ public class FourGameController {
      */
     @GetMapping("/addCoin/{gameId}/{column}")
     public Object addCoin(@PathVariable Long gameId, @PathVariable Integer column) {
+        logger.debug("Adding coin to column: " + column);
         return gameService.addCoin(gameId, column);
     }
 
@@ -45,6 +50,7 @@ public class FourGameController {
      */
     @GetMapping("/computer/{gameId}")
     public Object computerMovement(@PathVariable Long gameId) {
+        logger.debug("Getting computer movement");
         return gameService.getComputerMovement(gameId);
     }
 }

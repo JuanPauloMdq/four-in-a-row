@@ -20,9 +20,11 @@ public class EasyComputerIa {
                 if(currentGame.getGameState().getGameEnded()){
                     // Winner movement detected
                     currentGame.removeCoin(i);
+
                     return i;
+                } else {
+                    currentGame.removeCoin(i);
                 }
-                currentGame.removeCoin(i);
             }
         }
 
