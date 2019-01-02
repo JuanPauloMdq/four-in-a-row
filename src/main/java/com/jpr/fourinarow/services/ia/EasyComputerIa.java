@@ -2,11 +2,16 @@ package com.jpr.fourinarow.services.ia;
 
 import com.jpr.fourinarow.model.GameBoard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Simple heuristic to determine computer movemets
  *
  */
 public class EasyComputerIa {
+
+    private static Integer FULL_COLUMN_SCORE = -10;
 
     /**
      * Returns a suggest movement for the computer, it only analyse two steps ahead
@@ -34,21 +39,45 @@ public class EasyComputerIa {
             }
         }
 
-        Integer bestScore = -2;
-        Integer bestScorePosition = 0;
+        Integer bestScore = FULL_COLUMN_SCORE;
+        List<Integer> bestScorePositions = new ArrayList<Integer>();
+
         for(int i=0; i<GameBoard.BOARD_SIZE; i++){
             Integer score = getScore(currentGame, i);
-            if(score > bestScore || (score == bestScore && flipACoin())){
+            if(score > bestScore){
                 bestScore = score;
-                bestScorePosition = i;
+                bestScorePositions.clear();
+                bestScorePositions.add(i);
+            }
+            if(score == bestScore){
+                bestScorePositions.add(i);
             }
         }
 
-        return bestScorePosition;
+        return pickPosition(bestScorePositions);
+
     }
 
-    private boolean flipACoin(){
-        return Math.random() > 0.5;
+    /**
+     * Pick one of the best movements selected by the algorithm at random
+     *
+     *
+     * @param positions List of the best moments picked by the algorithm
+     * @return Returns one position at random
+     */
+    private Integer pickPosition(List<Integer> positions){
+        if(positions.size() == 1){
+            return positions.get(0);
+        }
+
+        if(positions.size() > 1){
+            Integer position = (int) Math.min(Math.floor(Math.random() * positions.size()), positions.size()-1);
+            return positions.get(position);
+        } else {
+            // In
+            throw new RuntimeException("Unable to generate a movement");
+        }
+
     }
 
     /**
@@ -89,7 +118,7 @@ public class EasyComputerIa {
             return winningMovements;
         } else {
             // The column is full
-            return -10;
+            return FULL_COLUMN_SCORE;
         }
     }
 
