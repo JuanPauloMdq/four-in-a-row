@@ -12,8 +12,7 @@ import java.util.Arrays;
 
 public class GameBoard {
     public static final int BOARD_SIZE = 7;
-    // Should check 3 positions in each direction
-    public static final int ADJACENT_POSITIONS_TO_CHECK = 7;
+    public static final int REQUIRED_COINS_IN_A_ROW = 4;
 
     public static final byte BOARD_EMPTY_COIN = 0;
     public static final byte BOARD_BLUE_COIN = 1;
@@ -96,9 +95,12 @@ public class GameBoard {
         // the complexity of this method is constant O(1)
         // Checks in 4 * 7 cells (directions multiplied the cells around each direction)
 
+        Integer positionsToCheck = 2 * (REQUIRED_COINS_IN_A_ROW - 1) + 1; // 3 each side plus the new coin
+        Integer positionsToCheckEachSide = REQUIRED_COINS_IN_A_ROW - 1;  // 3 each side
+
         // Horizontal check
-        for(int i=0; i<ADJACENT_POSITIONS_TO_CHECK; i++){
-            if(isColor(row, column-3+i , colorForCurrentUser)){
+        for(int i=0; i<positionsToCheck; i++){
+            if(isColor(row, column-positionsToCheckEachSide+i , colorForCurrentUser)){
                 consecutiveOcurrences++;
 
                 if(consecutiveOcurrences == 4){
@@ -111,8 +113,8 @@ public class GameBoard {
 
         consecutiveOcurrences = 0;
         // Vertical check
-        for(int i=0; i<ADJACENT_POSITIONS_TO_CHECK; i++){
-            if(isColor(row-3+i, column, colorForCurrentUser)){
+        for(int i=0; i<positionsToCheck; i++){
+            if(isColor(row-positionsToCheckEachSide+i, column, colorForCurrentUser)){
                 consecutiveOcurrences++;
 
                 if(consecutiveOcurrences == 4){
@@ -125,8 +127,8 @@ public class GameBoard {
 
         consecutiveOcurrences = 0;
         // Diagonal check
-        for(int i=0; i<ADJACENT_POSITIONS_TO_CHECK; i++){
-            if(isColor(row-i+3, column-i+3,colorForCurrentUser)){
+        for(int i=0; i<positionsToCheck; i++){
+            if(isColor(row-i+positionsToCheckEachSide, column-i+positionsToCheckEachSide,colorForCurrentUser)){
                 consecutiveOcurrences++;
 
                 if(consecutiveOcurrences == 4){
@@ -139,8 +141,8 @@ public class GameBoard {
 
         consecutiveOcurrences = 0;
         // The Other Diagonal check
-        for(int i=0; i<ADJACENT_POSITIONS_TO_CHECK; i++){
-            if(isColor(row+i-3, column-i+3,colorForCurrentUser)){
+        for(int i=0; i<positionsToCheck; i++){
+            if(isColor(row+i-positionsToCheckEachSide, column-i+positionsToCheckEachSide,colorForCurrentUser)){
                 consecutiveOcurrences++;
 
                 if(consecutiveOcurrences == 4){
