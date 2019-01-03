@@ -103,7 +103,7 @@ public class GameBoard {
             if(isColor(row, column-positionsToCheckEachSide+i , colorForCurrentUser)){
                 consecutiveOcurrences++;
 
-                if(consecutiveOcurrences == 4){
+                if(consecutiveOcurrences == REQUIRED_COINS_IN_A_ROW){
                     return true;
                 }
             } else {
@@ -117,7 +117,7 @@ public class GameBoard {
             if(isColor(row-positionsToCheckEachSide+i, column, colorForCurrentUser)){
                 consecutiveOcurrences++;
 
-                if(consecutiveOcurrences == 4){
+                if(consecutiveOcurrences == REQUIRED_COINS_IN_A_ROW){
                     return true;
                 }
             } else {
@@ -131,7 +131,7 @@ public class GameBoard {
             if(isColor(row-i+positionsToCheckEachSide, column-i+positionsToCheckEachSide,colorForCurrentUser)){
                 consecutiveOcurrences++;
 
-                if(consecutiveOcurrences == 4){
+                if(consecutiveOcurrences == REQUIRED_COINS_IN_A_ROW){
                     return true;
                 }
             } else {
@@ -145,7 +145,7 @@ public class GameBoard {
             if(isColor(row+i-positionsToCheckEachSide, column-i+positionsToCheckEachSide,colorForCurrentUser)){
                 consecutiveOcurrences++;
 
-                if(consecutiveOcurrences == 4){
+                if(consecutiveOcurrences == REQUIRED_COINS_IN_A_ROW){
                     return true;
                 }
             } else {
