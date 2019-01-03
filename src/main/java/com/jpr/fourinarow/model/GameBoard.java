@@ -12,7 +12,8 @@ import java.util.Arrays;
 
 public class GameBoard {
     public static final int BOARD_SIZE = 7;
-    public static final int CONSECUTIVE_POSITIONS_TO_CHECK = 7;
+    // Should check 3 positions in each direction
+    public static final int ADJACENT_POSITIONS_TO_CHECK = 7;
 
     public static final byte BOARD_EMPTY_COIN = 0;
     public static final byte BOARD_BLUE_COIN = 1;
@@ -96,7 +97,7 @@ public class GameBoard {
         // Checks in 4 * 7 cells (directions multiplied the cells around each direction)
 
         // Horizontal check
-        for(int i=0; i<CONSECUTIVE_POSITIONS_TO_CHECK; i++){
+        for(int i=0; i<ADJACENT_POSITIONS_TO_CHECK; i++){
             if(isColor(row, column-3+i , colorForCurrentUser)){
                 consecutiveOcurrences++;
 
@@ -110,7 +111,7 @@ public class GameBoard {
 
         consecutiveOcurrences = 0;
         // Vertical check
-        for(int i=0; i<CONSECUTIVE_POSITIONS_TO_CHECK; i++){
+        for(int i=0; i<ADJACENT_POSITIONS_TO_CHECK; i++){
             if(isColor(row-3+i, column, colorForCurrentUser)){
                 consecutiveOcurrences++;
 
@@ -124,7 +125,7 @@ public class GameBoard {
 
         consecutiveOcurrences = 0;
         // Diagonal check
-        for(int i=0; i<CONSECUTIVE_POSITIONS_TO_CHECK; i++){
+        for(int i=0; i<ADJACENT_POSITIONS_TO_CHECK; i++){
             if(isColor(row-i+3, column-i+3,colorForCurrentUser)){
                 consecutiveOcurrences++;
 
@@ -138,7 +139,7 @@ public class GameBoard {
 
         consecutiveOcurrences = 0;
         // The Other Diagonal check
-        for(int i=0; i<CONSECUTIVE_POSITIONS_TO_CHECK; i++){
+        for(int i=0; i<ADJACENT_POSITIONS_TO_CHECK; i++){
             if(isColor(row+i-3, column-i+3,colorForCurrentUser)){
                 consecutiveOcurrences++;
 
